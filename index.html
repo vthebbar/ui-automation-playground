@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Test Automation Playground</title>
+    <a href="https://vthebbar.github.io/learn.html" target="_blank">Learn More</a>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        :root {
+            --primary: 59 130 246;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .section-header {
+            scroll-margin-top: 80px;
+        }
+
+        .demo-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-link {
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgb(243 244 246);
+        }
+        
+        .active-nav {
+            background-color: rgb(59 130 246);
+            color: white;
+        }
+
+        .table-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .modal {
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .toast {
+            animation: toastIn 0.3s ease forwards;
+        }
+        
+        @keyframes toastIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="tail-container bg-gray-50 text-gray-900">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-72 bg-white border-r border-gray-200 overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">U</div>
+                    <div>
+                        <h1 class="logo-font text-2xl font-semibold tracking-tighter">UI Playground</h1>
+                        <p class="text-xs text-gray-500 -mt-1">Test Automation Lab</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4">
+                <div class="text-xs uppercase font-semibold text-gray-500 px-3 mb-2 mt-6">Navigation</div>
+                <nav class="space-y-1">
+                    <a href="#static" class="nav-link active-nav flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-text-size w-4"></i> Static Elements
+                    </a>
+                    <a href="#buttons" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-hand-pointer w-4"></i> Buttons & Actions
+                    </a>
+                    <a href="#inputs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-keyboard w-4"></i> Form Inputs
+                    </a>
+                    <a href="#selection" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-check-square w-4"></i> Selection Controls
+                    </a>
+                    <a href="#dropdowns" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-chevron-down w-4"></i> Dropdowns & Selects
+                    </a>
+                    <a href="#date" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-calendar w-4"></i> Date & Time
+                    </a>
+                    <a href="#data" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-table w-4"></i> Data Display
+                    </a>
+                    <a href="#overlays" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-window-restore w-4"></i> Overlays & Modals
+                    </a>
+                    <a href="#advanced" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium" onclick="setActive(this)">
+                        <i class="fa-solid fa-wand-magic-sparkles w-4"></i> Advanced Interactions
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="px-6 mt-8">
+                <div class="bg-blue-50 border border-blue-100 rounded-3xl p-5 text-xs">
+                    <div class="font-semibold text-blue-700 mb-1">Pro Tip for Automation</div>
+                    <p class="text-blue-600">Use <code class="bg-white px-1 rounded">data-testid</code> attributes on all elements.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Top Bar -->
+            <header class="bg-white border-b sticky top-0 z-50">
+                <div class="px-8 py-5 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-2xl font-semibold logo-font tracking-tight">Test Automation Playground</h2>
+                        <div class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-2xl flex items-center gap-1">
+                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                            READY FOR TESTING
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <button onclick="resetAll()" 
+                                class="px-5 py-2.5 text-sm font-medium border border-gray-300 rounded-2xl hover:bg-gray-50 flex items-center gap-2">
+                            <i class="fa-solid fa-rotate"></i>
+                            Reset All
+                        </button>
+                        <button onclick="showToast('Demo notification sent!')" 
+                                class="px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-2xl hover:bg-blue-700 transition-colors">
+                            Trigger Toast
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="max-w-7xl mx-auto px-8 py-10">
+                
+                <!-- Static Elements -->
+                <section id="static" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">01</span> Static Elements
+                    </h2>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div class="demo-card bg-white p-8 rounded-3xl border border-gray-100">
+                            <h3 class="font-semibold mb-6">Typography</h3>
+                            <h1 class="text-4xl font-bold mb-2">Heading 1</h1>
+                            <h2 class="text-3xl font-semibold mb-2">Heading 2</h2>
+                            <p class="text-gray-600">Regular paragraph text with <a href="#" class="text-blue-600 underline">inline link</a>.</p>
+                            <p class="text-sm text-gray-500 mt-4" data-testid="small-text">Small helper text</p>
+                        </div>
+                        
+                        <div class="demo-card bg-white p-8 rounded-3xl border border-gray-100">
+                            <h3 class="font-semibold mb-6">Images & Badges</h3>
+                            <img src="https://picsum.photos/id/237/300/160" alt="Test image for automation" 
+                                 class="w-full rounded-2xl mb-6" data-testid="demo-image">
+                            <div class="flex gap-3">
+                                <span class="px-4 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-2xl">Success</span>
+                                <span class="px-4 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-2xl">Warning</span>
+                                <span class="px-4 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-2xl">Error</span>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-card bg-white p-8 rounded-3xl border border-gray-100">
+                            <h3 class="font-semibold mb-6">Tooltips & Dividers</h3>
+                            <div class="group relative inline-block">
+                                <button class="px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-2xl text-sm font-medium"
+                                        data-testid="tooltip-trigger">
+                                    Hover for tooltip
+                                </button>
+                                <div class="absolute invisible group-hover:visible bg-gray-900 text-white text-xs px-4 py-2 rounded-2xl -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                                    This is a tooltip
+                                </div>
+                            </div>
+                            <hr class="my-8 border-gray-200">
+                            <div class="text-xs uppercase tracking-widest text-gray-400">Divider example</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Buttons -->
+                <section id="buttons" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">02</span> Buttons & Actions
+                    </h2>
+                    <div class="bg-white p-10 rounded-3xl border border-gray-100 space-y-10">
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="this.style.backgroundColor='#10b981'" 
+                                    class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-3xl transition-all active:scale-95"
+                                    data-testid="primary-button">Primary Button</button>
+                            
+                            <button class="px-8 py-4 border-2 border-gray-300 hover:border-gray-400 font-semibold rounded-3xl transition-all"
+                                    data-testid="secondary-button">Secondary</button>
+                            
+                            <button class="px-8 py-4 bg-gray-900 text-white font-semibold rounded-3xl flex items-center gap-3"
+                                    data-testid="icon-button">
+                                <i class="fa-solid fa-plus"></i> With Icon
+                            </button>
+                            
+                            <button disabled class="px-8 py-4 bg-gray-300 text-gray-500 font-semibold rounded-3xl cursor-not-allowed"
+                                    data-testid="disabled-button">Disabled</button>
+                            
+                            <button onclick="simulateLoading(this)" 
+                                    class="px-8 py-4 bg-violet-600 text-white font-semibold rounded-3xl flex items-center gap-3"
+                                    data-testid="loading-button">
+                                <span class="loading-text">Click for Loading</span>
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <a href="#" class="text-blue-600 hover:underline font-medium" data-testid="demo-link">This is a hyperlink</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Form Inputs -->
+                <section id="inputs" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">03</span> Form Inputs
+                    </h2>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-3xl border">
+                            <label class="block text-sm font-medium mb-2">Text Input</label>
+                            <input type="text" id="name" data-testid="text-input" 
+                                   class="w-full px-6 py-4 border border-gray-300 focus:border-blue-500 rounded-3xl outline-none transition-all"
+                                   placeholder="Enter your name" oninput="validateInput(this)">
+                            
+                            <label class="block text-sm font-medium mt-8 mb-2">Password</label>
+                            <input type="password" data-testid="password-input" 
+                                   class="w-full px-6 py-4 border border-gray-300 focus:border-blue-500 rounded-3xl outline-none">
+                            
+                            <label class="block text-sm font-medium mt-8 mb-2">Textarea</label>
+                            <textarea data-testid="textarea" rows="4"
+                                      class="w-full px-6 py-4 border border-gray-300 focus:border-blue-500 rounded-3xl outline-none resize-y"></textarea>
+                        </div>
+                        
+                        <div class="bg-white p-8 rounded-3xl border space-y-8">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Number with stepper</label>
+                                <input type="number" value="42" step="1" data-testid="number-input"
+                                       class="w-full px-6 py-4 border border-gray-300 focus:border-blue-500 rounded-3xl">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Email</label>
+                                <input type="email" data-testid="email-input" placeholder="test@example.com"
+                                       class="w-full px-6 py-4 border border-gray-300 focus:border-blue-500 rounded-3xl">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">File Upload</label>
+                                <label class="block border-2 border-dashed border-gray-300 hover:border-blue-400 rounded-3xl p-10 text-center cursor-pointer transition-colors">
+                                    <input type="file" data-testid="file-upload" class="hidden" onchange="handleFile(this)">
+                                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-3"></i>
+                                    <p class="font-medium">Drop file or click to upload</p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Selection Controls -->
+                <section id="selection" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">04</span> Selection Controls
+                    </h2>
+                    <div class="bg-white p-10 rounded-3xl border grid grid-cols-3 gap-12">
+                        <div>
+                            <h4 class="font-medium mb-5">Checkboxes</h4>
+                            <div class="space-y-4">
+                                <label class="flex items-center gap-3">
+                                    <input type="checkbox" data-testid="checkbox-1" class="w-5 h-5 accent-blue-600">
+                                    <span>Option One</span>
+                                </label>
+                                <label class="flex items-center gap-3">
+                                    <input type="checkbox" checked data-testid="checkbox-checked" class="w-5 h-5 accent-blue-600">
+                                    <span>Pre-checked</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium mb-5">Radio Buttons</h4>
+                            <div class="space-y-4">
+                                <label class="flex items-center gap-3">
+                                    <input type="radio" name="radio-group" data-testid="radio-1" class="w-5 h-5 accent-blue-600">
+                                    <span>Choice A</span>
+                                </label>
+                                <label class="flex items-center gap-3">
+                                    <input type="radio" name="radio-group" checked data-testid="radio-2" class="w-5 h-5 accent-blue-600">
+                                    <span>Choice B</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium mb-5">Toggle Switch</h4>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-testid="toggle-switch" class="sr-only peer" onchange="this.parentElement.querySelector('.slider').classList.toggle('bg-blue-600')">
+                                <div class="slider w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-all peer-checked:translate-x-7"></div>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dropdowns -->
+                <section id="dropdowns" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">05</span> Dropdowns & Selects
+                    </h2>
+                    <div class="bg-white p-10 rounded-3xl border">
+                        <div class="grid grid-cols-2 gap-10">
+                            <div>
+                                <label class="block text-sm font-medium mb-3">Native Select</label>
+                                <select data-testid="native-select" class="w-full px-6 py-4 border border-gray-300 rounded-3xl">
+                                    <option>Option 1</option>
+                                    <option selected>Option 2</option>
+                                    <option>Option 3</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-3">Custom Combobox (JS)</label>
+                                <div class="relative">
+                                    <input type="text" id="combo-input" placeholder="Search..." 
+                                           onfocus="showComboOptions()" data-testid="combobox-input"
+                                           class="w-full px-6 py-4 border border-gray-300 rounded-3xl">
+                                    <div id="combo-options" class="hidden absolute mt-2 w-full bg-white border border-gray-200 rounded-3xl py-2 shadow-xl z-50 max-h-60 overflow-auto">
+                                        <!-- populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Date & Time -->
+                <section id="date" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">06</span> Date & Time
+                    </h2>
+                    <div class="bg-white p-10 rounded-3xl border grid grid-cols-2 gap-8">
+                        <div>
+                            <label>Date Picker</label>
+                            <input type="date" data-testid="date-picker" class="w-full mt-3 px-6 py-4 border border-gray-300 rounded-3xl">
+                        </div>
+                        <div>
+                            <label>Time Picker</label>
+                            <input type="time" data-testid="time-picker" class="w-full mt-3 px-6 py-4 border border-gray-300 rounded-3xl">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Display -->
+                <section id="data" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">07</span> Data Display
+                    </h2>
+                    <div class="bg-white rounded-3xl border overflow-hidden">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="text-left p-6 font-medium">ID</th>
+                                    <th class="text-left p-6 font-medium">Name</th>
+                                    <th class="text-left p-6 font-medium">Status</th>
+                                    <th class="text-left p-6 font-medium">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="demo-table-body">
+                                <!-- JS populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Overlays -->
+                <section id="overlays" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">08</span> Overlays & Modals
+                    </h2>
+                    <div class="flex gap-6">
+                        <button onclick="showModal()" 
+                                class="px-8 py-4 bg-rose-600 text-white font-semibold rounded-3xl"
+                                data-testid="open-modal-btn">
+                            Open Modal
+                        </button>
+                        <button onclick="showToast('This is a success message! 🎉')" 
+                                class="px-8 py-4 bg-amber-500 text-white font-semibold rounded-3xl">
+                            Show Toast
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Advanced -->
+                <section id="advanced" class="mb-20">
+                    <h2 class="section-header text-3xl font-semibold mb-8 flex items-center gap-3">
+                        <span class="text-blue-600">09</span> Advanced Interactions
+                    </h2>
+                    <div class="bg-white p-10 rounded-3xl border">
+                        <div class="flex gap-8 items-center">
+                            <!-- Drag and Drop -->
+                            <div class="flex-1">
+                                <div id="dropzone" 
+                                     ondrop="drop(event)" 
+                                     ondragover="allowDrop(event)"
+                                     class="border-2 border-dashed border-gray-300 h-52 rounded-3xl flex items-center justify-center text-gray-400 hover:border-blue-400 transition-colors">
+                                    Drop files here
+                                </div>
+                            </div>
+                            
+                            <div class="flex-1 space-y-6">
+                                <div class="bg-gray-100 p-6 rounded-3xl" draggable="true" ondragstart="drag(event)">
+                                    Draggable Card
+                                </div>
+                                
+                                <button onclick="alert('Context menu would appear here in real app')" 
+                                        class="text-sm text-gray-500 hover:text-gray-700">
+                                    Right-click area (simulate context menu)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[100]">
+        <div class="modal bg-white rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-8">
+                <h3 class="text-2xl font-semibold mb-2">Demo Modal</h3>
+                <p class="text-gray-600">This is a sample modal dialog for automation practice.</p>
+                
+                <div class="my-8 space-y-4">
+                    <input type="text" placeholder="Modal input field" data-testid="modal-input"
+                           class="w-full px-6 py-4 border rounded-3xl">
+                </div>
+            </div>
+            <div class="border-t p-5 flex gap-4">
+                <button onclick="hideModal()" 
+                        class="flex-1 py-4 border font-medium rounded-3xl">Cancel</button>
+                <button onclick="hideModal()" 
+                        class="flex-1 py-4 bg-blue-600 text-white font-semibold rounded-3xl">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-8 right-8 space-y-3 z-[200]"></div>
+
+    <script>
+        // Tailwind script already loaded via CDN
+        
+        function setActive(el) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active-nav');
+            });
+            el.classList.add('active-nav');
+        }
+        
+        // Populate table
+        function populateTable() {
+            const tbody = document.getElementById('demo-table-body');
+            const data = [
+                {id: "001", name: "Alice Chen", status: "Active"},
+                {id: "002", name: "Bob Smith", status: "Pending"},
+                {id: "003", name: "Carol Williams", status: "Inactive"}
+            ];
+            
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row border-b last:border-none';
+                tr.innerHTML = `
+                    <td class="p-6">${row.id}</td>
+                    <td class="p-6 font-medium">${row.name}</td>
+                    <td class="p-6">
+                        <span class="px-4 py-1 text-xs font-medium rounded-2xl ${row.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : row.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}">
+                            ${row.status}
+                        </span>
+                    </td>
+                    <td class="p-6">
+                        <button onclick="alert('Edit row ${row.id}')" class="text-blue-600 hover:underline text-sm">Edit</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // Combobox
+        function showComboOptions() {
+            const container = document.getElementById('combo-options');
+            container.classList.remove('hidden');
+            container.innerHTML = `
+                <div onclick="selectCombo(this)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">Apple</div>
+                <div onclick="selectCombo(this)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">Banana</div>
+                <div onclick="selectCombo(this)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">Cherry</div>
+                <div onclick="selectCombo(this)" class="px-6 py-3 hover:bg-gray-100 cursor-pointer">Dragonfruit</div>
+            `;
+        }
+        
+        function selectCombo(el) {
+            document.getElementById('combo-input').value = el.textContent;
+            document.getElementById('combo-options').classList.add('hidden');
+        }
+        
+        // Modal
+        function showModal() {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal').classList.add('flex');
+        }
+        
+        function hideModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        // Toast
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast bg-gray-900 text-white px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-3 max-w-xs`;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-white">✕</button>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.4s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+        
+        // Loading simulation
+        function simulateLoading(btn) {
+            const text = btn.querySelector('.loading-text');
+            const original = text.textContent;
+            text.textContent = 'Loading...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                text.textContent = '✅ Done!';
+                showToast('Action completed successfully');
+                setTimeout(() => {
+                    text.textContent = original;
+                    btn.disabled = false;
+                }, 1500);
+            }, 1800);
+        }
+        
+        function validateInput(input) {
+            if (input.value.length > 15) {
+                input.style.borderColor = '#ef4444';
+            } else {
+                input.style.borderColor = '';
+            }
+        }
+        
+        function handleFile(input) {
+            if (input.files.length > 0) {
+                showToast(`File selected: ${input.files[0].name}`);
+            }
+        }
+        
+        // Drag and Drop
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+        
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id || "draggable-item");
+        }
+        
+        function drop(ev) {
+            ev.preventDefault();
+            showToast("Item dropped successfully! 🎯");
+        }
+        
+        function resetAll() {
+            if (confirm("Reset all form fields?")) {
+                window.location.reload();
+            }
+        }
+        
+        // Keyboard shortcuts demo
+        document.addEventListener('keydown', function(e) {
+            if (e.metaKey && e.key === "k") {
+                e.preventDefault();
+                showToast("Command palette would open here (⌘K)");
+            }
+        });
+        
+        // Initialize everything
+        window.onload = function() {
+            populateTable();
+            
+            // Close combo when clicking outside
+            document.addEventListener('click', function(e) {
+                const combo = document.getElementById('combo-options');
+                if (!e.target.closest('#combo-input')) {
+                    combo.classList.add('hidden');
+                }
+            });
+            
+            // Make sure modal closes when clicking backdrop
+            const modal = document.getElementById('modal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) hideModal();
+            });
+            
+            console.log('%c✅ UI Test Automation Playground initialized. Ready for Selenium / Playwright / Cypress tests.', 'color: #3b82f6; font-weight: bold');
+        };
+    </script>
+</body>
+</html>
